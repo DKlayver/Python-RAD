@@ -1,5 +1,7 @@
 import csv
 
+from model.transparance import Transparence
+
 
 class Archive:
     def __init__(self, path_file):
@@ -10,20 +12,13 @@ class Archive:
             csv.writer(file, delimiter=";")
 
     def file_read(self):
-        """Ler dados do arquivo csv.
+        with open(self.path_file, "r", encoding="utf-8") as file:
+            leitor = csv.reader(file, delimiter=";")
 
-        :returns dados: dados do arquivo csv
-        """
-        with open(self.path_file, "r", encoding="latin-1") as arquivo:
-            leitor = csv.reader(arquivo, delimiter=";")
-
-            # Ignora cabeçalho
             next(leitor, None)
-
             dados = []
             for linha in leitor:
-                # Cria um objeto Registro com os campos da linha
-                registro = Archive(
+                transparencia = Transparence(
                     linha[0],
                     linha[1],
                     linha[2],
@@ -42,10 +37,13 @@ class Archive:
                     linha[15],
                 )
 
-                dados.append(registro)
+                dados.append(transparencia)
 
-        return dados
-    @staticmethod
+            return dados
+
+ @staticmethod
     def edit_file(dados, position, new_register):
         dados[position] = new_register
+
+
 
